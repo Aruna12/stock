@@ -1,23 +1,16 @@
-var mysql=require('mysql');
+const db = require("./db");
+const product = require("./product")(db);
 
-var con=mysql.createConnection({
-  host:8080,
-  user:"root",
-  password:"root",
-  database:"stock1"
-});
+async function orders() {
+  try {
+    const productsLessThan10 = await product.selectByQuantity(10);
+    console.log(productsLessThan10.result);
 
- con.connect(function(err){
- if(err) throw err;
- console.log("Connected!");
- var sql="select name,qty from prod where qty < 10";
-  con.query(sql,function(err,result,fields){
-    if (err) throw err;
-    console.log(result);
-  var sql1="update prod set qty=qty+100,mfd=now(), exp=DATE_ADD(now(), INTERVAL 360 day) where qty<10"
-  con.query(sql1,function(err,result1,fields){
-    if (err) throw err;
-    console.log(result1);
-  });
- });
-});
+    const renewedProducts = await product.renewExpired(100, 10);
+    console.log(renewedProducts.result);
+  } catch (error) {
+    console.error("Error occured", error);
+  }
+}
+
+orders();

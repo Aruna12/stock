@@ -1,16 +1,13 @@
-var mysql=require('mysql');
+const db = require("./db");
+const product = require("./product")(db);
 
-var con=mysql.createConnection({
-  host:8080,
-  user:"root",
-  password:"root",
-  database:"stock1"
-});
+async function showAll() {
+  try {
+    const allProducts = await product.selectAll();
+    console.log(allProducts.result);
+  } catch (error) {
+    console.error("Error occured", error);
+  }
+}
 
-con.connect(function(err) {
- if (err) throw err;
- con.query("SELECT * FROM prod", function (err, result, fields) {
-   if (err) throw err;
-   console.log(result);
- });
-});
+showAll();
