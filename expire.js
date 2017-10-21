@@ -1,23 +1,15 @@
-var mysql=require('mysql');
+const db = require("./db");
+const product = require("./product")(db);
 
-var con=mysql.createConnection({
-  host:8080,
-  user:"root",
-  password:"root",
-  database:"stock1"
-});
+async function expiredProducts() {
+  try {
+    const expiredProducts = await product.selectExpired();
+    console.log(expiredProducts.result);
 
- con.connect(function(err){
- if(err) throw err;
- console.log("Connected!");
- var sql="select *from prod where exp < date(now())";
-  con.query(sql,function(err,result,fields){
-    if (err) throw err;
-    console.log(result);
-  var sqld="update prod set qty=0 where exp < now()";
-  con.query(sqld,function(err,result1,fields){
-    if (err) throw err;
-    console.log("deleted");
-  });
- });
-});
+    await product.deleteExpired();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+expiredProducts();
