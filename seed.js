@@ -1,4 +1,4 @@
-const db = require("./db");
+const db = require("./db")();
 const product = require("./product")(db);
 const seedData = [
   [1, "brush", "2017-08-09", "2018-08-09", 100, 50],
@@ -8,14 +8,14 @@ const seedData = [
   [5, "mop", "2017-04-10", "2020-04-10", 9, 100]
 ];
 
-async function seedDB(connectionOpts, seedData) {
+async function seedDB(seedData) {
   // create the connection
   const [result, fields] = await product.add(...seedData);
   console.log(`Records inserted: ${result.affectedRows}`);
 }
 
 try {
-  seedDB(connectionOpts, seedData);
+  seedDB(seedData);
 } catch (error) {
   console.error(`Error while seeding DB`, error);
 }
