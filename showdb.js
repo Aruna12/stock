@@ -1,4 +1,4 @@
-const db = require("./db");
+const db = require("./db")();
 const product = require("./product")(db);
 
 async function showAll() {

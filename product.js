@@ -1,4 +1,4 @@
-exports = module.exports = db => ({
+module.exports = db => ({
   add(...values) {
     return db.execute(
       "INSERT INTO `prod` (id, name, mfd, exp, qty, cost) VALUES ?",
