@@ -6,7 +6,7 @@ module.exports = db => ({
     );
   },
   selectAll() {
-    return db.execute("SELECT * FROM `prod`");
+    return db.execute("SELECT `name`, `qty` FROM `prod`");
   },
   selectByQuantity(quantity) {
     return db.execute(
